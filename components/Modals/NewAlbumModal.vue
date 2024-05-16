@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import * as z from "zod";
+import { toast } from "@/components/ui/toast";
+
 const open = ref<boolean>(false);
 
 const formSchema = toTypedSchema(
@@ -11,11 +13,18 @@ const formSchema = toTypedSchema(
 	})
 );
 
-const { handleSubmit } = useForm({
+const { handleSubmit, resetForm } = useForm({
 	validationSchema: formSchema,
 });
 
-const onSubmit = async () => {};
+const onSubmit = handleSubmit((values) => {
+	toast({
+		title: "You submitted the following values:",
+		description: h("pre", { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" }, h("code", { class: "text-white" }, JSON.stringify(values, null, 2))),
+	});
+	resetForm()
+	open.value = false
+});
 </script>
 <template>
 	<Dialog v-model:open="open">
@@ -23,7 +32,7 @@ const onSubmit = async () => {};
 			<Button class="rounded-full">Add Album</Button>
 		</DialogTrigger>
 		<DialogContent class="sm:max-w-[425px] font-inconsolata">
-			<form @submit="handleSubmit(onSubmit)">
+			<form @submit="onSubmit">
 				<DialogHeader>
 					<DialogTitle>Add Album</DialogTitle>
 					<DialogDescription>Enter the title of the album</DialogDescription>

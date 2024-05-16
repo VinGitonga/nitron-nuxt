@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 <template>
 	<LandingWrapper>
 		<div class="mt-10">
@@ -9,10 +8,11 @@
 					<div class="mt-10">
 						<h3 class="text-lg">We provide the best cloud storage for your photos and videos. Our platform is designed to help you store your memories and share them with your loved ones.</h3>
 					</div>
-					<div class="mt-6">
-						<Button class="rounded-full">
-							Get Started
-						</Button>
+					<div class="mt-6 space-x-3">
+						<NuxtLink to="/auth/signin">
+							<Button class="rounded-full"> Sign In </Button>
+						</NuxtLink>
+						<Button class="rounded-full"> Get Started </Button>
 					</div>
 				</div>
 				<div class="col-auto md:col-span-3">

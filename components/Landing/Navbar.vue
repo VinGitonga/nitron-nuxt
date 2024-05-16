@@ -9,7 +9,12 @@
 				<LandingNavLink text="Blog" />
 				<LandingNavLink text="Contact Us" />
 			</ul>
-			<Button class="rounded-full">Get Started</Button>
+			<div class="space-x-3">
+				<NuxtLink to="/auth/signin">
+					<Button class="rounded-full"> Sign In </Button>
+				</NuxtLink>
+				<Button class="rounded-full">Get Started</Button>
+			</div>
 		</div>
 	</div>
 </template>
