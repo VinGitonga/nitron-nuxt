@@ -2,28 +2,61 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
-import * as z from "zod";
 import { toast } from "@/components/ui/toast";
+import { CreateAlbumSchema } from "~/schemas/albums/create-album.schema";
+import { Loader2 } from "lucide-vue-next";
+
+interface IProps {
+	refresh?: VoidFunction;
+}
+
+const props = defineProps<IProps>();
 
 const open = ref<boolean>(false);
+const loading = ref<boolean>(false);
 
-const formSchema = toTypedSchema(
-	z.object({
-		title: z.string({ message: "Title is required" }).min(3, { message: "Title must be at least 3 characters" }),
-	})
-);
+const formSchema = toTypedSchema(CreateAlbumSchema);
 
 const { handleSubmit, resetForm } = useForm({
 	validationSchema: formSchema,
+	initialValues: {
+		title: "",
+	},
 });
 
-const onSubmit = handleSubmit((values) => {
-	toast({
-		title: "You submitted the following values:",
-		description: h("pre", { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" }, h("code", { class: "text-white" }, JSON.stringify(values, null, 2))),
-	});
-	resetForm()
-	open.value = false
+const { createAlbum } = useAlbumUtils();
+
+const onSubmit = handleSubmit(async (values) => {
+	loading.value = true;
+
+	try {
+		const resp = await createAlbum(values);
+
+		if (resp?.value?.status === "success") {
+			toast({
+				title: "Album Created",
+			});
+
+			resetForm();
+			props?.refresh?.();
+			open.value = false;
+		} else {
+			toast({
+				title: "Error",
+				description: "Unable to create album.",
+				variant: "destructive",
+			});
+		}
+	} catch (err) {
+		console.log(err)
+		toast({
+			title: "Error",
+			description: "Unable to create album.",
+			variant: "destructive",
+		});
+	} finally {
+		loading.value = false;
+	}
 });
 </script>
 <template>
@@ -41,7 +74,10 @@ const onSubmit = handleSubmit((values) => {
 					<AppInput name="title" label="Title" placeholder="e.g. Vintage Cars" />
 				</div>
 				<DialogFooter>
-					<Button type="submit"> Save Changes </Button>
+					<Button type="submit" :disabled="loading">
+						<Loader2 v-if="loading" class="animate-spin w-5 h-5 mr-2"/>
+						{{ loading ? "Saving" : "Save" }}
+					</Button>
 				</DialogFooter>
 			</form>
 		</DialogContent>

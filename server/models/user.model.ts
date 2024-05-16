@@ -7,6 +7,8 @@ interface IUser {
 	email: string;
 	password: string;
 	profileImage?: string;
+	createdAt: string;
+	updatedAt: string
 }
 
 interface UserMethods {
