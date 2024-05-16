@@ -5,7 +5,8 @@ interface IAlbum {
 	title: string;
 	user?: UserDocument;
     createdAt: string;
-	updatedAt: string
+	updatedAt: string;
+	photoCount?: number
 }
 
 type AlbumModel = Model<IAlbum>;

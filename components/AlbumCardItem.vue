@@ -30,7 +30,7 @@ const userAvatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?${getUsername
 				<div class="flex items-center space-x-2">
 					<Avatar class="w-20 h-20 rounded-full border">
 						<AvatarImage :src="userAvatarUrl" />
-						<AvatarFallback class="text-black">{{ getInitials(album.user?.name ?? "Sean Vincent" ) }}</AvatarFallback>
+						<AvatarFallback class="text-black">{{ getInitials(album.user?.name ?? "Sean Vincent") }}</AvatarFallback>
 					</Avatar>
 					<NuxtLink to="/">
 						<p class="text-base font-bold transition-all duration-500 leading-5 hover:underline">
@@ -47,7 +47,10 @@ const userAvatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?${getUsername
 						}}
 					</p>
 				</div>
-				<Badge>2 Photos</Badge>
+				<Badge>
+					{{ album?.photoCount }}
+					Photos</Badge
+				>
 			</div>
 		</div>
 	</div>

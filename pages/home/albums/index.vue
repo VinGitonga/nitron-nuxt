@@ -18,7 +18,9 @@ const albums = ref<AlbumDocument[]>(data.value?.status === "success" ? (data.val
 					<p>List of all albums. This page is just a demo to show how the API works. The data is fetched from the backend and displayed here.</p>
 				</div>
 			</div>
-			<ModalsNewAlbumModal :refresh="refresh" />
+			<div class="flex items-center space-x-3">
+				<ModalsNewAlbumModal :refresh="refresh" />
+			</div>
 		</div>
 		<div v-if="albums.length" className="grid grid-cols-2 gap-7 mt-6">
 			<AlbumCardItem v-for="(album, i) in albums" :key="i" :album="album" :idx="i" />

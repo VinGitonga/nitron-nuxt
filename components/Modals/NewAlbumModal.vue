@@ -32,7 +32,9 @@ const onSubmit = handleSubmit(async (values) => {
 	try {
 		const resp = await createAlbum(values);
 
-		if (resp?.value?.status === "success") {
+		console.log(resp)
+
+		if (resp?.status === "success") {
 			toast({
 				title: "Album Created",
 			});
