@@ -11,3 +11,7 @@ export function getInitials(name: string) {
 export function getFileExtension(filename: string) {
 	return filename.split(".").pop();
 }
+
+export function getUsername(name: string) {
+	return name.replace(/\s/g, "").toLowerCase();
+}

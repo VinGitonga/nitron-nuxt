@@ -12,6 +12,10 @@ const { signIn } = useAuth();
 
 const { handleSubmit, resetForm } = useForm({
 	validationSchema: formSchema,
+	initialValues: {
+		email: "",
+		password: "",
+	},
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -58,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
 				<div class="mt-4"></div>
 				<NuxtLink to="/auth/forgot-password" class="text-indigo-600 hover:text-indigo-500 hover:underline hover:underline-offset-4">Forgot Password</NuxtLink>
 				<div class="mt-4"></div>
-				<Button class="w-full">
+				<Button class="w-full" type="submit" :disabled="loading">
 					<Loader2 v-if="loading" class="w-5 h-5 mr-2 animate-spin" />
 					{{ loading ? "Authenticating" : "Sign In" }}
 				</Button>

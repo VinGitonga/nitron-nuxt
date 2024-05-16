@@ -1,5 +1,16 @@
 <script setup>
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+const { data, signOut } = useAuth();
+
+const account = computed(() => data?.value);
+
+const imgUrl = computed(() => `https://api.dicebear.com/8.x/adventurer/svg?seed=${getUsername(account?.value?.user?.name)}`);
+
+const logout = async () => {
+	await signOut({
+		callbackUrl: "/auth/signin",
+	});
+};
 </script>
 <template>
 	<aside class="h-screen">
@@ -32,12 +43,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 						<div class="flex items-center justify-between border px-1 py-2 rounded-2xl">
 							<div class="flex items-center space-x-1">
 								<Avatar class="w-10 h-10 rounded-full">
-									<AvatarImage src="https://api.dicebear.com/8.x/adventurer/svg?seed=seanvincent" />
-									<AvatarFallback class="text-black">{{ getInitials("Sean Vincent") }}</AvatarFallback>
+									<AvatarImage :src="imgUrl" />
+									<AvatarFallback class="text-black">{{ getInitials(account?.user?.name) }}</AvatarFallback>
 								</Avatar>
-								<p class="truncate capitalize">@sean</p>
+								<p class="truncate capitalize">
+									{{ account?.user?.name }}
+								</p>
 							</div>
-							<Button size="icon" class="rounded-full" variant="ghost">
+							<Button size="icon" class="rounded-full" variant="ghost" @click="logout" >
 								<Icon name="mdi:logout" size="24px" />
 							</Button>
 						</div>

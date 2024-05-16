@@ -1,7 +1,5 @@
 <script setup lang="ts">
 const { data } = useAuth();
-
-console.log(data.value);
 </script>
 <template>
 	<LandingWrapper>
