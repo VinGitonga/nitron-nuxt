@@ -4,9 +4,25 @@ import { Loader2 } from "lucide-vue-next";
 
 const { getAllAlbums } = useAlbumUtils();
 
-const { data, refresh } = await getAllAlbums();
+const albums = ref<AlbumDocument[] | null>(null);
+const refresh = ref<VoidFunction | null>(null);
 
-const albums = ref<AlbumDocument[]>(data.value?.status === "success" ? (data.value.data as AlbumDocument[]) : []);
+onBeforeMount(async () => {
+	console.log("Fetching all albums...");
+	try {
+		console.log("Am I here?")
+		const { data, refresh: mutate } = await getAllAlbums();
+
+		if (data.value?.status === "success") {
+			albums.value = data.value.data!;
+			refresh.value = mutate;
+		}
+	} catch (err) {
+		console.error(err);
+	}
+});
+
+console.log(albums.value)
 </script>
 <template>
 	<Title> Albums </Title>
@@ -19,13 +35,13 @@ const albums = ref<AlbumDocument[]>(data.value?.status === "success" ? (data.val
 				</div>
 			</div>
 			<div class="flex items-center space-x-3">
-				<ModalsNewAlbumModal :refresh="refresh" />
+				<ModalsNewAlbumModal :refresh="refresh!" />
 			</div>
 		</div>
-		<div v-if="albums.length" className="grid grid-cols-2 gap-7 mt-6">
+		<div v-if="albums?.length" className="grid grid-cols-2 gap-7 mt-6">
 			<AlbumCardItem v-for="(album, i) in albums" :key="i" :album="album" :idx="i" />
 		</div>
-		<div v-if="albums.length === 0 || !albums" class="flex items-center justify-center h-96">
+		<div v-if="albums?.length === 0 || !albums" class="flex items-center justify-center h-96">
 			<Loader2 class="w-24 h-24 animate-spin" />
 		</div>
 	</AppWrapper>

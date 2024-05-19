@@ -12,6 +12,7 @@ const props = defineProps<IProps>();
 
 const avatarUrl = `https://source.unsplash.com/random?random&${props.idx}`;
 const userAvatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?${getUsername(props.album.user?.name ?? "Sean Vincent")}`;
+const albumUrlPath = `/home/albums/profile/${props.album._id}`;
 </script>
 <template>
 	<div class="max-w-lg border border-solid border-gray-200 rounded-2xl transition-all duration-500">
@@ -21,7 +22,7 @@ const userAvatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?${getUsername
 			</NuxtLink>
 		</div>
 		<div class="px-4 py-4">
-			<NuxtLink>
+			<NuxtLink :to="albumUrlPath">
 				<h2 class="text-lg font-semibold hover:underline">
 					{{ album.title }}
 				</h2>

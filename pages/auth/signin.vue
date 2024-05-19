@@ -40,7 +40,7 @@ const onSubmit = handleSubmit(async (values) => {
 				description: "You have successfully signed in",
 			});
 			resetForm();
-			navigateTo("/");
+			navigateTo("/home");
 		}
 	} catch (err: any) {
 		toast({

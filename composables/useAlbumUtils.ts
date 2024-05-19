@@ -20,10 +20,23 @@ export default () => {
 			return resp;
 		});
 
-		console.log(data)
+		return { data, refresh };
+	};
+
+	const getAlbumById = async (id: string) => {
+		const { data, refresh } = useLazyAsyncData(
+			`get-album-by-id-${id}`,
+			async () => {
+				const resp = await $fetch<ApiResponseType<AlbumDocument>>(`/api/albums/get/by-id/${id}`);
+
+				console.log(resp);
+
+				return resp;
+			},
+		);
 
 		return { data, refresh };
 	};
 
-	return { createAlbum, getAllAlbums };
+	return { createAlbum, getAllAlbums, getAlbumById };
 };

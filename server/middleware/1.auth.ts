@@ -2,8 +2,14 @@ import { getServerSession } from "#auth";
 import UrlPattern from "url-pattern";
 
 export default defineEventHandler(async (event) => {
-	// non protected routes including wildcard
+	// non protected routes including wildcard and also the client side routes
 	const nonProtectedRoutes = ["/api/auth/*", "/api/users"];
+
+	const isApiRoute = event.node.req.url!.startsWith("/api");
+
+	if (!isApiRoute) {
+		return;
+	}
 
 	const isNonProtectedRoute = nonProtectedRoutes.some((route) => {
 		const pattern = new UrlPattern(route);
